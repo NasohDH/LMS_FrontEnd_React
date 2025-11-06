@@ -8,42 +8,42 @@ import LockIcon from '@mui/icons-material/Lock';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, clearError } from '../store/slices/authSlice';
+import { loginUser, clearError } from '../../../store/slices/authSlice';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Local state for form inputs
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [timeoutError, setTimeoutError] = useState(false);
   const [showTimeoutAlert, setShowTimeoutAlert] = useState(false);
 
-  // Get auth state from Redux store
+ 
   const { isLoading, isAuthenticated, error, user } = useSelector((state) => state.auth);
 
-  // Clear errors when component unmounts or when user starts typing
+ 
   useEffect(() => {
     return () => {
       dispatch(clearError());
     };
   }, [dispatch]);
 
-  // Set up request timeout
+ 
   useEffect(() => {
     let timeoutId;
     
     if (isLoading) {
-      // Set a timeout to abort the request after 10 seconds
+     
       timeoutId = setTimeout(() => {
         if (isLoading) {
           setTimeoutError(true);
           setShowTimeoutAlert(true);
-          // We can't directly abort the request from here, but we can show a message
-          // The actual abort will be handled in the authSlice
+         
+         
         }
-      }, 10000); // 10 seconds
+      }, 10000);
     }
     
     return () => {
@@ -52,7 +52,7 @@ const LoginPage = () => {
     };
   }, [isLoading]);
 
-  // Redirect user if already logged in
+ 
   useEffect(() => {
     if (isAuthenticated) {
       if (user?.role === 'admin') {
@@ -65,7 +65,7 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setTimeoutError(false); // Reset timeout error
+    setTimeoutError(false);
     dispatch(loginUser({ email, password }));
   };
 
@@ -101,15 +101,13 @@ const LoginPage = () => {
           </Typography>
         </Box>
 
-        {/* Error Alert */}
         {error && (
           <Alert severity="error" sx={{ mb: 2 }} onClose={() => dispatch(clearError())}>
             {error}
           </Alert>
         )}
 
-        {/* Timeout Alert */}
-        <Snackbar 
+        <Snackbar
           open={showTimeoutAlert} 
           autoHideDuration={6000} 
           onClose={handleCloseAlert}

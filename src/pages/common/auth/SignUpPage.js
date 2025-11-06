@@ -21,7 +21,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { registerUser, clearMessages, setSigninEmail } from '../store/slices/authSlice';
+import { registerUser, clearMessages, setSigninEmail } from '../../../store/slices/authSlice';
 
 const SignUpPage = () => {
   const [firstName, setFirstNameLocal] = useState('');
@@ -52,7 +52,7 @@ const SignUpPage = () => {
     
     if (!isSignUpValid) return;
     
-    // Create FormData object for file upload
+   
     const formData = new FormData();
     formData.append('first_name', firstName);
     formData.append('last_name', lastName);
@@ -71,7 +71,7 @@ const SignUpPage = () => {
     }
     
      dispatch(registerUser(formData)).unwrap();
-      // After successful registration, redirect to email verification
+     
       dispatch(setSigninEmail(email));
       navigate('/verify-email');
     
